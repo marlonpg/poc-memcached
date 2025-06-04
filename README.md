@@ -168,3 +168,7 @@ public class MemcachedJavaExample {
 
 ```
 
+### References
+- For comparison with Redis
+    https://dev.to/scalegrid/redis-vs-memcached-2021-comparison-5hep
+    https://dzone.com/articles/performance-and-scalability-analysis-of-redis-memcached

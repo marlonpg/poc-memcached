@@ -172,3 +172,53 @@ public class MemcachedJavaExample {
 - For comparison with Redis
     https://dev.to/scalegrid/redis-vs-memcached-2021-comparison-5hep
     https://dzone.com/articles/performance-and-scalability-analysis-of-redis-memcached
+
+
+
+It was created in
+Memcached was originally developed by Brad Fitzpatrick for LiveJournal in 2003.
+
+Saving in memory, it is not persisted by default
+
+
+
+
+## Alternatives for manual sharding technique
+
+Approach	Library Needed	Scalability	Used By
+CRC32 % N	None (pure Java)	Poor	Small systems
+Ketama (custom)	smile-ketama	High	Custom deployments
+XMemcached	xmemcached	High	Java ecosystems
+SpyMemcached	spymemcached	High	Netflix, legacy apps
+
+import net.spy.memcached.*;
+import net.spy.memcached.ConnectionFactoryBuilder.Locator;
+
+MemcachedClient client = new MemcachedClient(
+    new ConnectionFactoryBuilder()
+        .setLocatorType(Locator.CONSISTENT) // Ketama
+        .build(),
+    AddrUtil.getAddresses("memcached1:11211,memcached2:11211")
+);
+
+
+How Memcached Scaling Really Works
+(No Replication, No Built-in Consistent Hashing)
+
+1. Client-Side Sharding (Key-Based Distribution)
+Clients (application code) decide which Memcached node to use by hashing the key (e.g., CRC32(key) % number_of_servers).
+
+No coordination between nodes—each Memcached server operates independently.
+
+Problem: If you add/remove a node, most keys will be remapped (% N changes), causing a thundering herd of cache misses.
+
+2. No Replication → Cache Misses on Failures
+If a Memcached node fails, all its data is lost (since it’s purely in-memory).
+
+Clients must fall back to the database and repopulate the new node.
+
+3. Scaling = Just Adding More Nodes
+More nodes = More total RAM available for caching.
+
+Traffic spreads across nodes, reducing per-server load.
+

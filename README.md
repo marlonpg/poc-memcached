@@ -1,7 +1,16 @@
 # poc-memcached
 [Documentation](https://docs.memcached.org/)
 
-Memcached is a widely-used, open-source, high-performance, distributed memory object caching system. It is primarily designed to speed up dynamic web applications by alleviating database load. Essentially, it acts as a short-term memory for your applications, storing frequently accessed pieces of data in RAM, which is significantly faster to access than disk-based storage.
+
+What it is:
+Memcached is an in-memory key-value store, designed for speed and simplicity.
+Memcached is used as a cache layer, not a primary storage.
+Memcached was originally developed by Brad Fitzpatrick in 2003.
+
+How it works:
+
+Memcached is a widely-used, open-source, high-performance, distributed memory object caching system. 
+It is primarily designed to speed up dynamic web applications by alleviating database load. Essentially, it acts as a short-term memory for your applications, storing frequently accessed pieces of data in RAM, which is significantly faster to access than disk-based storage.
 
 Think of it like this: if your application frequently needs to fetch the same piece of information from a database (e.g., a user's profile, a product catalog), doing so repeatedly can be slow and resource-intensive. Memcached allows you to store a copy of this information in memory. When the application needs it again, it first checks memcached. If the data is there (a "cache hit"), it's retrieved quickly. If not (a "cache miss"), the application fetches it from the database and then stores it in memcached for future requests.
 
